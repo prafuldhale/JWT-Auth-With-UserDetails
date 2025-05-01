@@ -1,9 +1,5 @@
 package com.planto.user_service.security;
 
-/*
- * @author Praful
- */
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,11 +15,41 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Component that handles unauthorized access attempts in the application.
+ * This class implements the {@link AuthenticationEntryPoint} interface to provide
+ * a custom response for unauthorized requests.
+ *
+ * <p>When an unauthorized request is made, this class logs the error and sends
+ * a JSON response containing the error details.</p>
+ *
+ * <p>Fields:</p>
+ * <ul>
+ *   <li>{@code logger} - Logger instance for logging unauthorized access attempts.</li>
+ * </ul>
+ *
+ * <p>Methods:</p>
+ * <ul>
+ *   <li>{@code commence(HttpServletRequest, HttpServletResponse, AuthenticationException)} -
+ *       Handles the unauthorized access by logging the error and sending a JSON response.</li>
+ * </ul>
+ *
+ * @author Praful
+ */
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
+    /**
+     * Handles unauthorized access attempts by logging the error and sending a JSON response.
+     *
+     * @param request The HTTP request that resulted in an {@link AuthenticationException}.
+     * @param response The HTTP response to be sent to the client.
+     * @param authException The exception that triggered this entry point.
+     * @throws IOException If an input or output error occurs while writing the response.
+     * @throws ServletException If a servlet-specific error occurs.
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {

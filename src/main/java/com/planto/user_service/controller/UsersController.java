@@ -26,7 +26,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
+/**
+ * Controller for managing user-related operations such as registration, login, profile management, and authentication checks.
+ */
 @RestController
 @RequestMapping("/users")
 public class UsersController {
@@ -43,7 +45,12 @@ public class UsersController {
     @Autowired
     PasswordEncoder encoder;
 
-
+    /**
+     * Registers a new user.
+     *
+     * @param user The user details to register.
+     * @return ResponseEntity containing the registered user and HTTP status.
+     */
     @PostMapping("/register")
     @PreAuthorize("permitAll()")
     public ResponseEntity<Users> registerUser(@RequestBody Users user) {
@@ -56,12 +63,24 @@ public class UsersController {
         }
     }
 
+    /**
+     * Authenticates a user and generates a JWT token.
+     *
+     * @param user The user credentials (username and password).
+     * @return ResponseEntity containing the authentication result or error message.
+     */
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
     public ResponseEntity<Object> authenticateUser(@RequestBody Users user) {
         return userService.authenticateUser(user.getUsername(), user.getPassword());
     }
 
+    /**
+     * Retrieves the profile of a user by their ID.
+     *
+     * @param userId The ID of the user to retrieve.
+     * @return ResponseEntity containing the user profile or an error message if not found.
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ADMIN')")
     public ResponseEntity<?> getUserProfile(@PathVariable("id") String userId) {
@@ -74,6 +93,13 @@ public class UsersController {
         }
     }
 
+    /**
+     * Updates the profile of an existing user.
+     *
+     * @param userId The ID of the user to update.
+     * @param user The updated user details.
+     * @return ResponseEntity containing a success message or an error message if the update fails.
+     */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public ResponseEntity<?> updateUserProfile(@PathVariable("id") String userId, @RequestBody Users user) {
@@ -85,7 +111,12 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-    
+
+    /**
+     * Checks the authentication status of the current user.
+     *
+     * @return ResponseEntity containing the authentication object from the SecurityContext.
+     */
     @GetMapping("/check-auth")
     public ResponseEntity<?> checkAuth() {
         return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());

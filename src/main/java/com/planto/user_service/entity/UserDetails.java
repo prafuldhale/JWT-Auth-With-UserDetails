@@ -14,33 +14,95 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+/**
+ * Entity class representing user details.
+ * This class is mapped to the "user" table in the database and includes fields for personal information,
+ * address, and relationships with claims and nominees.
+ */
 @Entity
 @Table(name = "user")
 public class UserDetails {
+
+	/**
+	 * Unique identifier for the user.
+	 * This value is auto-generated.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
+
+	/**
+	 * The first name of the user.
+	 */
 	private String firstName;
+
+	/**
+	 * The last name of the user.
+	 */
 	private String lastName;
+
+	/**
+	 * The email address of the user.
+	 */
 	private String email;
+
+	/**
+	 * The city where the user resides.
+	 */
 	private String city;
-	
+
+	/**
+	 * The state where the user resides.
+	 */
 	private String state;
-    private int pincode;
-    private String address; // New field
-    private String county = "India"; // Default value
 
-	private String gender; // added
+	/**
+	 * The pincode of the user's address.
+	 */
+	private int pincode;
+
+	/**
+	 * The full address of the user.
+	 */
+	private String address;
+
+	/**
+	 * The country of the user. Defaults to "India".
+	 */
+	private String county = "India";
+
+	/**
+	 * The gender of the user.
+	 */
+	private String gender;
+
+	/**
+	 * The age of the user.
+	 */
 	private int age;
-	private String marital_status; // added
 
+	/**
+	 * The marital status of the user.
+	 */
+	private String marital_status;
+
+	/**
+	 * The set of claims associated with the user.
+	 * This is a one-to-many relationship, with cascade and orphan removal enabled.
+	 */
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private Set<Claim> claims = new HashSet<>();
 
+	/**
+	 * The set of nominees associated with the user.
+	 * This is a one-to-many relationship, with cascade and orphan removal enabled.
+	 */
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private Set<Nominee> nominees = new HashSet<>();
+
+	// Getters and setters
 
 	public Long getUserId() {
 		return userId;
@@ -81,38 +143,38 @@ public class UserDetails {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	
+
 	public String getState() {
-        return state;
-    }
+		return state;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    public int getPincode() {
-        return pincode;
-    }
+	public int getPincode() {
+		return pincode;
+	}
 
-    public void setPincode(int pincode) {
-        this.pincode = pincode;
-    }
-    
-    public String getAddress() {
-        return address;
-    }
+	public void setPincode(int pincode) {
+		this.pincode = pincode;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public String getCounty() {
-        return county;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public void setCounty(String county) {
-        this.county = county;
-    }
+	public String getCounty() {
+		return county;
+	}
+
+	public void setCounty(String county) {
+		this.county = county;
+	}
 
 	public int getAge() {
 		return age;
@@ -147,11 +209,10 @@ public class UserDetails {
 	}
 
 	public String getMaritalStatus() {
-	    return marital_status;
+		return marital_status;
 	}
 
 	public void setMaritalStatus(String marital_status) {
-	    this.marital_status = marital_status;
+		this.marital_status = marital_status;
 	}
-
 }
